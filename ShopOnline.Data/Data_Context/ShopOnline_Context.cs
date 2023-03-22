@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShopOnline.Data.ConfigurationDBContext;
 using ShopOnline.Data.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,50 @@ namespace ShopOnline.Data.Data_Context
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfiguration(new CartConfiguration());
 
-            //modelBuilder.Entity<Person>().HasKey(x => x.PersonId);
-            //modelBuilder.Entity<Person>().ToTable("Person");
-            //modelBuilder.Entity<Officer>().HasKey<int>(x => x.OfficerId);
-            //modelBuilder.Entity<Officer>().ToTable("Officer");
+            modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductInCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+
+            modelBuilder.ApplyConfiguration(new OrderDetailConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryTranslationConfiguration());
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
+            modelBuilder.ApplyConfiguration(new LanguageConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
+            modelBuilder.ApplyConfiguration(new PromotionConfiguration());
+            modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
         }
         DbSet<Product> products { get; set; }
         DbSet<Category> Categories{ get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<Category> Category { get; set; }
+
+        public DbSet<AppConfig> AppConfigs { get; set; }
+
+
+        public DbSet<Cart> Carts { get; set; }
+
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+        public DbSet<ProductInCategory> ProductInCategories { get; set; }
+
+        public DbSet<Contact> Contacts { get; set; }
+
+        public DbSet<Language> Languages { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<ProductTranslation> ProductTranslations { get; set; }
+
+        public DbSet<Promotion> Promotions { get; set; }
+
+
+        public DbSet<Transaction> Transactions { get; set; }
+
 
 
     }
