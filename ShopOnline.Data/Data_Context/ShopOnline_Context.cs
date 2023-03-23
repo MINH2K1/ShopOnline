@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.ConfigurationDBContext;
 using ShopOnline.Data.Entities;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Data.Data_Context
 {
-   public  class ShopOnline_Context:DbContext
+   public  class ShopOnline_Context:IdentityDbContext
     {
         public ShopOnline_Context(DbContextOptions<ShopOnline_Context> options):base(options) { }
        
@@ -32,11 +33,9 @@ namespace ShopOnline.Data.Data_Context
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
         }
-        DbSet<Product> products { get; set; }
+        DbSet<Product> Products { get; set; }
         DbSet<Category> Categories{ get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Category { get; set; }
-
+    
         public DbSet<AppConfig> AppConfigs { get; set; }
 
 
