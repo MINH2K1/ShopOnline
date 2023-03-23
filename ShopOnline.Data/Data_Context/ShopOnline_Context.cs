@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.ConfigurationDBContext;
 using ShopOnline.Data.Entities;
+using ShopOnline.Data.Extention;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Data.Data_Context
 {
-   public  class ShopOnline_Context:IdentityDbContext
+   public  class ShopOnline_Context:IdentityDbContext<AppUser,AppRole,Guid>
     {
         public ShopOnline_Context(DbContextOptions<ShopOnline_Context> options):base(options) { }
        
@@ -32,6 +34,15 @@ namespace ShopOnline.Data.Data_Context
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
+            modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
+
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new {x.UserId,x.RoleId});
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x=>x.UserId);
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
+            modelBuilder.Entity <IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x=>x.UserId);
+            modelBuilder.Seed();
         }
         DbSet<Product> Products { get; set; }
         DbSet<Category> Categories{ get; set; }

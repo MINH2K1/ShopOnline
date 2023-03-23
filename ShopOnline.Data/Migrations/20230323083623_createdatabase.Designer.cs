@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopOnline.Data.Data_Context;
 
@@ -11,9 +12,10 @@ using ShopOnline.Data.Data_Context;
 namespace ShopOnline.Data.Migrations
 {
     [DbContext(typeof(ShopOnline_Context))]
-    partial class ShopOnline_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230323083623_createdatabase")]
+    partial class createdatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
