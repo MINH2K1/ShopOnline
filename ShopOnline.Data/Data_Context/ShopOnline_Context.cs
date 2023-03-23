@@ -44,12 +44,12 @@ namespace ShopOnline.Data.Data_Context
             modelBuilder.Entity <IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x=>x.UserId);
             modelBuilder.Seed();
         }
-        DbSet<Product> Products { get; set; }
-        DbSet<Category> Categories{ get; set; }
+       
     
         public DbSet<AppConfig> AppConfigs { get; set; }
 
-
+       public DbSet<Product> Products { get; set; }
+       public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
 
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
