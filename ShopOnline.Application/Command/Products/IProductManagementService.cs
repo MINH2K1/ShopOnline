@@ -14,7 +14,7 @@ namespace ShopOnline.Application.Command.Products
     {
        Task< int> Create(ProductCreateRequest request);
 
-        Task<int> Update(ProductCreateRequest request);
+        Task<int> Update(ProductUpdateRequest request);
         Task<int>  Delete(int productId);
         Task<bool> UpdatePrice(int productId, decimal newPice);
         Task<bool> UpdateStock(int productId, int addQuantity);

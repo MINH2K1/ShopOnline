@@ -136,10 +136,7 @@ namespace ShopOnline.Application.Command.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<int> Update(ProductCreateRequest request)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
         {
