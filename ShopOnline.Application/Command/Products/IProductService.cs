@@ -11,7 +11,7 @@ namespace ShopOnline.Application.Command.Products
 {
     public interface IProductService
     {
-        PageResult<ProductViewModel> GetAllByCategory(GetProductPagingRequest request);
+       Task<PageResult<ProductViewModel> >GetAllByCategory(GetProductPagingRequest request);
 
     }
 }

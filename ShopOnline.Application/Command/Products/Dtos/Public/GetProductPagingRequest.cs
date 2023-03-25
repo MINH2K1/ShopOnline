@@ -9,6 +9,6 @@ namespace ShopOnline.Application.Command.Products.Dtos.Public
 {
     public class GetProductPagingRequest : PageRequestsBase
     {
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }
