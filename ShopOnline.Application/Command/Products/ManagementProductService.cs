@@ -155,6 +155,9 @@ namespace ShopOnline.Application.Command.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
-
+        public Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
