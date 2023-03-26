@@ -1,4 +1,5 @@
-﻿using ShopOnline.Application.Command.Products.Dtos;
+﻿
+using ShopOnline.Application.Command.Products.Dtos;
 using ShopOnline.Application.Command.Products.Dtos.Manage;
 using ShopOnline.Application.Command.Products.Dtos.Public;
 using ShopOnline.Application.Dtos;
@@ -12,15 +13,16 @@ namespace ShopOnline.Application.Command.Products
 {
     public interface IProductManagementService
     {
-        Task< int> Create(ProductCreateRequest request);
+       Task< int> Create(ProductCreateRequest request);
+
         Task<int> Update(ProductCreateRequest request);
         Task<int>  Delete(int productId);
-        Task<bool> UpdatePrice(int productId);
-        Task<bool> UpdateStock(int productId);
+        Task<bool> UpdatePrice(int productId, decimal newPice);
+        Task<bool> UpdateStock(int productId, int addQuantity);
 
         Task AddViewCount(int productId);
-        Task<List<ProductViewModel>> GetAll(ProductCreateRequest request);
-        Task<PageResult<ProductViewModel>> GetAllPaging(Dtos.Manage.GetProductPagingRequest request);
+
+       Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request);
 
     }
 }
