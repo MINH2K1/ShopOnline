@@ -8,6 +8,7 @@ namespace ShopOnline.Application.Command.Products.Dtos
 {
     public class ProductViewModel
     {
+        public int Id { get; set; }
         public decimal Price { get; set; }
         public decimal OriginalPrice { get; set; }
         public int Stock { get; set; }
@@ -16,6 +17,7 @@ namespace ShopOnline.Application.Command.Products.Dtos
         public int ProductId { set; get; }
         public string Name { set; get; }
         public string Description { set; get; }
+        
         public string Details { set; get; }
         public string SeoDescription { set; get; }
         public string SeoTitle { set; get; }

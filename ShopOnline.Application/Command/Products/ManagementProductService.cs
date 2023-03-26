@@ -4,7 +4,7 @@ using ShopOnline.Application.Command.Products.Dtos.Manage;
 using ShopOnline.Application.Dtos;
 using ShopOnline.Data.Data_Context;
 using ShopOnline.Data.Entities;
-using ShopOnline.Enitities.Excepition;
+using ShopOnline.Utill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +23,7 @@ namespace ShopOnline.Application.Command.Products
             _context = context;
         }
 
-        public async Task AddViewCount(int productId)
-        {
-            var product = await _context.Products.FindAsync(productId);
-            product.ViewCount+=1;
-            await _context.SaveChangesAsync();
-        }
+      
 
         public async Task<int> Create(ProductCreateRequest request)
         {
@@ -59,12 +54,21 @@ namespace ShopOnline.Application.Command.Products
 
         }
 
+        public async Task<int> Update(ProductUpdateRequest request)
+        {
+            var product = await _context.Products.FindAsync(request.Id);
+            if (product == null)
+                throw new ShopOnlineException("can not find product");
+            
+            _context.Products.Update(product);
+            return await _context.SaveChangesAsync();
+        }
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ShopOnlineExeption($"Can't find product{productId} ");
+                throw new ShopOnlineException($"Can't find product{productId} ");
             }
 
             _context.Products.Remove(product);
@@ -73,7 +77,7 @@ namespace ShopOnline.Application.Command.Products
 
     
 
-        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequestManage request)
        {
             //select join
             var query = from p in _context.Products
@@ -85,9 +89,9 @@ namespace ShopOnline.Application.Command.Products
             if (!string.IsNullOrEmpty(request.Keyword)){
               query=  query.Where(x => x.pt.Name.Contains(request.Keyword));
             }
-            if (request.CategoryId.Count > 0)
+            if (request.CategoryIds.Count > 0)
             {
-                query = query.Where(x => request.CategoryId.Contains(x.pic.CategoryId));
+                query = query.Where(x => request.CategoryIds.Contains(x.pic.CategoryId));
 
             }
             //paging
@@ -120,50 +124,13 @@ namespace ShopOnline.Application.Command.Products
             return pagedResult;
         }
 
-        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+
+      
+        public async Task AddViewCount(int productId)
         {
-            //selectjoin
-            var query = from p in _context.Products
-                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
-                        select new { p, pt, pic };
-
-            //filter
-            if (!string.IsNullOrEmpty(request.Keyword))
-            {
-                query = query.Where(x => x.pt.Name.Contains(request.Keyword));
-            }
-            if (request.CategoryIds.Count > 0)
-            {
-                query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
-            }
-            //pagiing
-            int TotalRow = await query.CountAsync();
-
-            var data = query.Skip((request.PageSize-1) * request.PageSize)
-                .Take(request.PageSize)
-                .Select(x => new ProductViewModel()
-                {
-                    Id = x.p.Id,
-                    Name = x.pt.Name,
-                    Datecrated = x.p.Datecrated,
-                    Description = x.pt.Description,
-                    Details = x.pt.Details
-                });
-
-            //result
-            var pageResult = new PageResult<ProductViewModel>()
-            {
-                TotalRecord = TotalRow,
-                Items = await data.ToListAnsyc();
-        };
-    }
-
-
-        public Task<int> Update(ProductCreateRequest request)
-        {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(productId);
+            product.ViewCount += 1;
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)

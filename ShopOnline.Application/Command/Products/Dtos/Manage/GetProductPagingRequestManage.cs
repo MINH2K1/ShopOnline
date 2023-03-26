@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Application.Command.Products.Dtos.Manage
 {
-    public class GetProductPagingRequest : PageRequestsBase
+    public class GetProductPagingRequestManage : PageRequestsBase
     {
         public string Keyword { get; set; }
         public List<int> CategoryIds { get; set; }
