@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.ConfigurationDBContext;
 using ShopOnline.Data.Entities;
+using ShopOnline.Data.Extention;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnline.Data.Data_Context
 {
-   public  class ShopOnline_Context:DbContext
+   public  class ShopOnline_Context:IdentityDbContext<AppUser,AppRole,Guid>
     {
         public ShopOnline_Context(DbContextOptions<ShopOnline_Context> options):base(options) { }
        
@@ -31,15 +34,22 @@ namespace ShopOnline.Data.Data_Context
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
-        }
-        DbSet<Product> products { get; set; }
-        DbSet<Category> Categories{ get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Category> Category { get; set; }
+            modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
+            modelBuilder.ApplyConfiguration(new AppUserConfiguration());
 
+            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
+            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new {x.UserId,x.RoleId});
+            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x=>x.UserId);
+            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
+            modelBuilder.Entity <IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x=>x.UserId);
+            modelBuilder.Seed();
+        }
+       
+    
         public DbSet<AppConfig> AppConfigs { get; set; }
 
-
+       public DbSet<Product> Products { get; set; }
+       public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
 
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }

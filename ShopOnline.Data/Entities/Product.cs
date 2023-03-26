@@ -9,11 +9,13 @@ namespace ShopOnline.Data.Entities
     public class Product
     {
         public int Id { get; set; }
+
+        public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal OriginalPrice { get; set; }
         public int Stock { get; set; }
         public int ViewCount { get; set; }
-        public DateTime DateCreate { get; set; }
+        public DateTime DateCreated { get; set; }
         public int CeoAlias { get; set; }
 
 
@@ -24,5 +26,7 @@ namespace ShopOnline.Data.Entities
         public List<Cart> Carts { get; set; }
 
         public List<ProductTranslation> ProductTranslations { get; set; }
+
+
     }
 }

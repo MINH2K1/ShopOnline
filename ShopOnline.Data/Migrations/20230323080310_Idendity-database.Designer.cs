@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopOnline.Data.Data_Context;
 
@@ -11,9 +12,10 @@ using ShopOnline.Data.Data_Context;
 namespace ShopOnline.Data.Migrations
 {
     [DbContext(typeof(ShopOnline_Context))]
-    partial class ShopOnline_ContextModelSnapshot : ModelSnapshot
+    [Migration("20230323080310_Idendity-database")]
+    partial class Idenditydatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,13 +99,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("UserId", "RoleId");
 
                     b.ToTable("AppUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            RoleId = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -138,23 +133,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Key");
 
                     b.ToTable("AppConfigs", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Key = "HomeTitle",
-                            Value = "This is home page of eShopSolution"
-                        },
-                        new
-                        {
-                            Key = "HomeKeyword",
-                            Value = "This is keyword of eShopSolution"
-                        },
-                        new
-                        {
-                            Key = "HomeDescription",
-                            Value = "This is description of eShopSolution"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.AppRole", b =>
@@ -166,7 +144,7 @@ namespace ShopOnline.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Desc")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
@@ -180,16 +158,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "70acd581-de83-4904-b828-ba6003adc7bb",
-                            Description = "Administrator role",
-                            Name = "admin",
-                            NormalizedName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.AppUser", b =>
@@ -256,27 +224,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1821d2df-0fe6-4616-8747-b4a72feb2e97",
-                            Dob = new DateTime(2001, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = true,
-                            FirstName = "Duc",
-                            LastName = "Minh",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "minhk19caothang@gmail.com",
-                            NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGwDrEtnLXA3h0gGvE6oQDpmS3Cv1zoMyQVWabzpCLQzauakOp4TidcgTpaReyDu0Q==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "",
-                            TwoFactorEnabled = false,
-                            UserName = "admin"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Cart", b =>
@@ -306,8 +253,6 @@ namespace ShopOnline.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Carts", (string)null);
                 });
 
@@ -319,39 +264,24 @@ namespace ShopOnline.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("IsShowOnHome")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
+                    b.Property<string>("Sort")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
+                    b.Property<bool>("isShowOnHome")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsShowOnHome = true,
-                            SortOrder = 1,
-                            Status = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            IsShowOnHome = true,
-                            SortOrder = 2,
-                            Status = 1
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.CategoryTranslation", b =>
@@ -398,48 +328,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("LanguageId");
 
                     b.ToTable("CategoryTranslations", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 1,
-                            LanguageId = "vi",
-                            Name = "Áo nam",
-                            SeoAlias = "ao-nam",
-                            SeoDescription = "Sản phẩm áo thời trang nam",
-                            SeoTitle = "Sản phẩm áo thời trang nam"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            LanguageId = "en",
-                            Name = "Men Shirt",
-                            SeoAlias = "men-shirt",
-                            SeoDescription = "The shirt products for men",
-                            SeoTitle = "The shirt products for men"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CategoryId = 2,
-                            LanguageId = "vi",
-                            Name = "Áo nữ",
-                            SeoAlias = "ao-nu",
-                            SeoDescription = "Sản phẩm áo thời trang nữ",
-                            SeoTitle = "Sản phẩm áo thời trang women"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CategoryId = 2,
-                            LanguageId = "en",
-                            Name = "Women Shirt",
-                            SeoAlias = "women-shirt",
-                            SeoDescription = "The shirt products for women",
-                            SeoTitle = "The shirt products for women"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Contact", b =>
@@ -495,20 +383,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Languages", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "vi",
-                            IsDefault = true,
-                            Name = "Tiếng Việt"
-                        },
-                        new
-                        {
-                            Id = "en",
-                            IsDefault = false,
-                            Name = "English"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Order", b =>
@@ -522,7 +396,7 @@ namespace ShopOnline.Data.Migrations
                     b.Property<DateTime>("OrderDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 3, 23, 15, 36, 22, 829, DateTimeKind.Local).AddTicks(7093));
+                        .HasDefaultValue(new DateTime(2023, 3, 23, 15, 3, 10, 160, DateTimeKind.Local).AddTicks(2877));
 
                     b.Property<string>("ShipAddress")
                         .IsRequired()
@@ -552,8 +426,6 @@ namespace ShopOnline.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Orders", (string)null);
                 });
@@ -590,7 +462,7 @@ namespace ShopOnline.Data.Migrations
                     b.Property<int>("CeoAlias")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("OriginalPrice")
@@ -612,18 +484,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CeoAlias = 0,
-                            DateCreated = new DateTime(2023, 3, 23, 15, 36, 22, 832, DateTimeKind.Local).AddTicks(7423),
-                            OriginalPrice = 100000m,
-                            Price = 200000m,
-                            Stock = 0,
-                            ViewCount = 0
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductInCategory", b =>
@@ -639,13 +499,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductInCategories", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = 1,
-                            ProductId = 1
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.ProductTranslation", b =>
@@ -699,32 +552,6 @@ namespace ShopOnline.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductTranslations", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Áo sơ mi nam trắng Việt Tiến",
-                            Details = "Áo sơ mi nam trắng Việt Tiến",
-                            LanguageId = "vi",
-                            Name = "Áo sơ mi nam trắng Việt Tiến",
-                            ProductId = 1,
-                            SeoAlias = "ao-so-mi-nam-trang-viet-tien",
-                            SeoDescription = "Áo sơ mi nam trắng Việt Tiến",
-                            SeoTitle = "Áo sơ mi nam trắng Việt Tiến"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Viet Tien Men T-Shirt",
-                            Details = "Viet Tien Men T-Shirt",
-                            LanguageId = "en",
-                            Name = "Viet Tien Men T-Shirt",
-                            ProductId = 1,
-                            SeoAlias = "viet-tien-men-t-shirt",
-                            SeoDescription = "Viet Tien Men T-Shirt",
-                            SeoTitle = "Viet Tien Men T-Shirt"
-                        });
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Promotion", b =>
@@ -806,12 +633,7 @@ namespace ShopOnline.Data.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Transactions", (string)null);
                 });
@@ -823,14 +645,6 @@ namespace ShopOnline.Data.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ShopOnline.Data.Entities.AppUser", "AppUser")
-                        .WithMany("Carts")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
 
                     b.Navigation("Product");
                 });
@@ -852,17 +666,6 @@ namespace ShopOnline.Data.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("ShopOnline.Data.Entities.Order", b =>
-                {
-                    b.HasOne("ShopOnline.Data.Entities.AppUser", "AppUser")
-                        .WithMany("Oders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.OrderDetail", b =>
@@ -920,26 +723,6 @@ namespace ShopOnline.Data.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ShopOnline.Data.Entities.Transaction", b =>
-                {
-                    b.HasOne("ShopOnline.Data.Entities.AppUser", "AppUser")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("ShopOnline.Data.Entities.AppUser", b =>
-                {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Oders");
-
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("ShopOnline.Data.Entities.Category", b =>
