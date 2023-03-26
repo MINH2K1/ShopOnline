@@ -4,10 +4,11 @@ using ShopOnline.Application.Command.Products.Dtos.Manage;
 using ShopOnline.Application.Dtos;
 using ShopOnline.Data.Data_Context;
 using ShopOnline.Data.Entities;
-using ShopOnline.Utill;
+using ShopOnline.Enitities.Excepition;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,12 +61,13 @@ namespace ShopOnline.Application.Command.Products
 
         public async Task<int> Delete(int productId)
         {
-            var product =  await _context.Products.FindAsync(productId);
-            if(product==null)
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null)
             {
-                throw new ShopOnlineException($"can not find product{productId}");
+                throw new ShopOnlineExeption($"Can't find product{productId} ");
             }
-            _context.Remove(product);
+
+            _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
         }
 
@@ -118,23 +120,46 @@ namespace ShopOnline.Application.Command.Products
             return pagedResult;
         }
 
-        public async Task<int> Update(ProductUpdateRequest request)
+        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
         {
-            var product = await _context.Products.FindAsync(request.Id);
-            var producTraislation = await _context.ProductTranslations
-                .FirstOrDefaultAsync(z => z.ProductId == request.Id
-                     && z.LanguageId == request.LanguageId);
-            if (product == null)
-            {
-                throw new ShopOnlineException($"can not find {request.Id}");
-             }
-            producTraislation.Name = request.Name;
-            producTraislation.SeoAlias = request.SeoAlias;
-            producTraislation.SeoTitle = request.SeoTitle;
-            producTraislation.SeoDescription = request.SeoDescription;
+            //selectjoin
+            var query = from p in _context.Products
+                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
+                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        select new { p, pt, pic };
 
-            return await _context.SaveChangesAsync();
-        }
+            //filter
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(x => x.pt.Name.Contains(request.Keyword));
+            }
+            if (request.CategoryIds.Count > 0)
+            {
+                query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
+            }
+            //pagiing
+            int TotalRow = await query.CountAsync();
+
+            var data = query.Skip((request.PageSize-1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new ProductViewModel()
+                {
+                    Id = x.p.Id,
+                    Name = x.pt.Name,
+                    Datecrated = x.p.Datecrated,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details
+                });
+
+            //result
+            var pageResult = new PageResult<ProductViewModel>()
+            {
+                TotalRecord = TotalRow,
+                Items = await data.ToListAnsyc();
+        };
+    }
+
 
         public Task<int> Update(ProductCreateRequest request)
         {
