@@ -57,10 +57,18 @@ namespace ShopOnline.Application.Command.Products
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.Id);
-            if (product == null)
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id);
+            if (product == null && productTranslation == null)
+            {
                 throw new ShopOnlineException("can not find product");
-            
-            _context.Products.Update(product);
+            }
+                        productTranslation.Name = request.Name;
+                        productTranslation.Description = request.Description;
+                        productTranslation.Details = request.Details;
+                        productTranslation.SeoDescription = request.SeoDescription;
+                        productTranslation.SeoAlias = request.SeoAlias;
+                        productTranslation.SeoTitle = request.SeoTitle;
+                        productTranslation.LanguageId = request.LanguageId;
             return await _context.SaveChangesAsync();
         }
         public async Task<int> Delete(int productId)
@@ -77,7 +85,7 @@ namespace ShopOnline.Application.Command.Products
 
     
 
-        public async Task<PageResult<ProductViewModel>> GetAllPaging(GetProductPagingRequestManage request)
+        public async Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request)
        {
             //select join
             var query = from p in _context.Products
@@ -125,7 +133,7 @@ namespace ShopOnline.Application.Command.Products
         }
 
 
-      
+     
         public async Task AddViewCount(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
@@ -155,9 +163,6 @@ namespace ShopOnline.Application.Command.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 }
