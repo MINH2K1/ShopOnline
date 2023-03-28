@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ShopOnline.Application.Dtos;
+using ShopOnlineViewModel.Common;
 
-namespace ShopOnline.Application.Command.Products.Dtos.Public
+namespace ShopOnlineViewModel.Catalog.Product.Public
 {
     public class GetProductPagingRequest : PageRequestsBase
     {

@@ -33,7 +33,7 @@ namespace ShopOnline.Data.Data_Context
             modelBuilder.ApplyConfiguration(new ProductTranslationConfiguration());
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
-
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
             modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
             modelBuilder.ApplyConfiguration(new AppUserConfiguration());
 
@@ -47,8 +47,8 @@ namespace ShopOnline.Data.Data_Context
        
     
         public DbSet<AppConfig> AppConfigs { get; set; }
-
-       public DbSet<Product> Products { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
+        public DbSet<Product> Products { get; set; }
        public DbSet<Category> Categories { get; set; }
         public DbSet<Cart> Carts { get; set; }
 

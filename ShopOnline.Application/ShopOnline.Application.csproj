@@ -7,12 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.15" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ShopOnline.Data\ShopOnline.Data.csproj" />
     <ProjectReference Include="..\ShopOnline.Utill\ShopOnline.Utill.csproj" />
+    <ProjectReference Include="..\ShopOnlineViewModel\ShopOnlineViewModel.csproj" />
   </ItemGroup>
 
 </Project>

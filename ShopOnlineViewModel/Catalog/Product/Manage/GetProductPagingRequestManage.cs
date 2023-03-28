@@ -1,11 +1,11 @@
-﻿using ShopOnline.Application.Dtos;
+﻿using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShopOnline.Application.Command.Products.Dtos.Manage
+namespace ShopOnlineViewModel.Catalog.Product.Manage
 {
     public class GetProductPagingRequestManage : PageRequestsBase
     {

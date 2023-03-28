@@ -1,13 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShopOnline.Application.Command.Products.Dtos;
-using ShopOnline.Application.Command.Products.Dtos.Manage;
-using ShopOnline.Application.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using ShopOnline.Application.Comon;
 using ShopOnline.Data.Data_Context;
 using ShopOnline.Data.Entities;
 using ShopOnline.Utill;
+using ShopOnlineViewModel.Catalog.Product;
+using ShopOnlineViewModel.Catalog.Product.Manage;
+using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,13 +21,21 @@ namespace ShopOnline.Application.Command.Products
     public class ManagementProductService : IProductManagementService
     {
         private readonly ShopOnline_Context _context;
-
-        public ManagementProductService(ShopOnline_Context context)
+        private readonly IStorageService _storageService;
+        public ManagementProductService(ShopOnline_Context context, IStorageService  storageService)
         {
+            _storageService = storageService;
             _context = context;
         }
 
-      
+      private async Task <string> SaveFile (IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim();
+            var fileName= $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(), fileName);
+
+            return fileName;
+        }
 
         public async Task<int> Create(ProductCreateRequest request)
         {
@@ -49,6 +61,21 @@ namespace ShopOnline.Application.Command.Products
                 }
                 
             };
+            if (request.ThumbnailImange != null)
+            {
+                product.ProductImanges = new List<ProductImage>()
+                {
+                    new ProductImage()
+                    {
+                        Caption= request.Name,
+                        DateCreate = DateTime.Now,
+                        FileSize = request.ThumbnailImange.Length,
+                        ImagePath= await this.SaveFile(request.ThumbnailImange),
+                        IsDefaul=true,
+                        SortOder=1,
+                    }
+                };
+            }
             _context.Products.Add(product);
             return await _context.SaveChangesAsync();
 
@@ -58,7 +85,7 @@ namespace ShopOnline.Application.Command.Products
         {
             var product = await _context.Products.FindAsync(request.Id);
             var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == request.Id);
-            if (product == null && productTranslation == null)
+            if ( productTranslation == null && product == null)
             {
                 throw new ShopOnlineException("can not find product");
             }
@@ -69,17 +96,43 @@ namespace ShopOnline.Application.Command.Products
                         productTranslation.SeoAlias = request.SeoAlias;
                         productTranslation.SeoTitle = request.SeoTitle;
                         productTranslation.LanguageId = request.LanguageId;
+
+            if (request.ThumbnailImange != null)
+            {
+                var ThumbnailImange = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefaul == true && i.ProdutId == request.Id);
+               
+                if (ThumbnailImange != null)
+                {
+
+                    ThumbnailImange.Caption = request.Name;
+                    ThumbnailImange.DateCreate = DateTime.Now;
+                    ThumbnailImange.FileSize = request.ThumbnailImange.Length;
+                    ThumbnailImange.ImagePath = await this.SaveFile(request.ThumbnailImange);
+                    ThumbnailImange.IsDefaul = true;
+                    ThumbnailImange.SortOder = 1;
+                    _context.ProductImages.Update(ThumbnailImange);
+                }
+            }
+
             return await _context.SaveChangesAsync();
         }
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
+
+            var images = await _context.ProductImages.FirstOrDefaultAsync(i=> i.ProdutId == product.Id);
+           foreach( var image in images)
+            {
+                _storageService.DeleteAsync(image.ImagePath);
+            }    
+           
             if (product == null)
             {
                 throw new ShopOnlineException($"Can't find product{productId} ");
             }
-
+        
             _context.Products.Remove(product);
+
             return await _context.SaveChangesAsync();
         }
 
