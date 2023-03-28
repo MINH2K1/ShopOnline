@@ -1,8 +1,9 @@
 ﻿
-using ShopOnline.Application.Command.Products.Dtos;
-using ShopOnline.Application.Command.Products.Dtos.Manage;
-using ShopOnline.Application.Command.Products.Dtos.Public;
-using ShopOnline.Application.Dtos;
+
+using Microsoft.AspNetCore.Http;
+using ShopOnlineViewModel.Catalog.Product;
+using ShopOnlineViewModel.Catalog.Product.Manage;
+using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace ShopOnline.Application.Command.Products
         Task<bool> UpdateStock(int productId, int addQuantity);
 
         Task AddViewCount(int productId);
+
+        Task<int> AddImange(int productId, List<IFormFile> files);
+
+        Task<int> UpdateImage(int productId, int ImageId, List<IFormFile> files);
+        Task<int> RemoveImage(int imageId);
+
+        
 
        Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request);
 
