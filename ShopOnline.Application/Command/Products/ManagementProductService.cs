@@ -7,6 +7,7 @@ using ShopOnline.Data.Entities;
 using ShopOnline.Utill;
 using ShopOnlineViewModel.Catalog.Product;
 using ShopOnlineViewModel.Catalog.Product.Manage;
+using ShopOnlineViewModel.Catalog.ProductImage;
 using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
@@ -119,8 +120,12 @@ namespace ShopOnline.Application.Command.Products
         public async Task<int> Delete(int productId)
         {
             var product = await _context.Products.FindAsync(productId);
+            if (product == null)
+            {
+                throw new ShopOnlineException($"can not product {productId}");
+            }
 
-            var images = await _context.ProductImages.FirstOrDefaultAsync(i=> i.ProdutId == product.Id);
+            var images =  _context.ProductImages.Where(i=> i.ProdutId == productId);
            foreach( var image in images)
             {
                 _storageService.DeleteAsync(image.ImagePath);
@@ -216,6 +221,35 @@ namespace ShopOnline.Application.Command.Products
             return await _context.SaveChangesAsync() > 0;
         }
 
-      
+        public async Task<int> AddImange(int productId, ProductImageCreateRequest request)
+        {
+            var productImage = new ProductImage()
+            {
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                ProductId = productId,
+                SortOrder = request.SortOrder
+            };
+
+
+         
+         
+        }
+
+        public Task<int> UpdateImage(int ImageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> RemoveImage(int imageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<ProductImageViewModel>> GetListImage(int ProductIsd)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
