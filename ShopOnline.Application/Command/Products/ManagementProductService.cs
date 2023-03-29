@@ -72,7 +72,7 @@ namespace ShopOnline.Application.Command.Products
                         DateCreate = DateTime.Now,
                         FileSize = request.ThumbnailImange.Length,
                         ImagePath= await this.SaveFile(request.ThumbnailImange),
-                        IsDefaul=true,
+                        IsDefault=true,
                         SortOder=1,
                     }
                 };
@@ -100,7 +100,7 @@ namespace ShopOnline.Application.Command.Products
 
             if (request.ThumbnailImange != null)
             {
-                var ThumbnailImange = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefaul == true && i.ProdutId == request.Id);
+                var ThumbnailImange = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefault == true && i.ProductId == request.Id);
                
                 if (ThumbnailImange != null)
                 {
@@ -109,7 +109,7 @@ namespace ShopOnline.Application.Command.Products
                     ThumbnailImange.DateCreate = DateTime.Now;
                     ThumbnailImange.FileSize = request.ThumbnailImange.Length;
                     ThumbnailImange.ImagePath = await this.SaveFile(request.ThumbnailImange);
-                    ThumbnailImange.IsDefaul = true;
+                    ThumbnailImange.IsDefault = true;
                     ThumbnailImange.SortOder = 1;
                     _context.ProductImages.Update(ThumbnailImange);
                 }
@@ -125,7 +125,7 @@ namespace ShopOnline.Application.Command.Products
                 throw new ShopOnlineException($"can not product {productId}");
             }
 
-            var images =  _context.ProductImages.Where(i=> i.ProdutId == productId);
+            var images =  _context.ProductImages.Where(i=> i.ProductId == productId);
            foreach( var image in images)
             {
                 _storageService.DeleteAsync(image.ImagePath);
@@ -226,15 +226,19 @@ namespace ShopOnline.Application.Command.Products
             var productImage = new ProductImage()
             {
                 Caption = request.Caption,
-                DateCreated = DateTime.Now,
+                DateCreate = DateTime.Now,
                 IsDefault = request.IsDefault,
                 ProductId = productId,
-                SortOrder = request.SortOrder
+                SortOder = request.SortOrder
             };
-
-
-         
-         
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+            _context.ProductImages.Add(productImage);
+            await _context.SaveChangesAsync();
+            return productImage.Id;
         }
 
         public Task<int> UpdateImage(int ImageId, string caption, bool isDefault)
@@ -248,6 +252,16 @@ namespace ShopOnline.Application.Command.Products
         }
 
         public Task<List<ProductImageViewModel>> GetListImage(int ProductIsd)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> AddImange(int productId, List<IFormFile> files)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<ProductImageViewModel>> IProductManagementService.GetListImage(int ProductIsd)
         {
             throw new NotImplementedException();
         }

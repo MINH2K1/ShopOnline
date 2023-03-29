@@ -10,11 +10,10 @@ namespace ShopOnline.Data.Entities
     {
         public int Id { get; set; }
     
-
         public string ImagePath { get; set; }
         public string Caption { get; set; }
 
-        public bool IsDefaul {get; set;}
+        public bool IsDefault {get; set;}
 
         public DateTime DateCreate { get; set; }
 
@@ -22,7 +21,7 @@ namespace ShopOnline.Data.Entities
 
         public long FileSize { get; set; }
 
-        public int ProdutId { get; set; }
+        public int ProductId { get; set; }
         public Product Product { get; set; }
     }
 }

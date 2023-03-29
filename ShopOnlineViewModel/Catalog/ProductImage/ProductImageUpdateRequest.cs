@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopOnlineViewModel.Catalog.ProductImage
 {
-    public class ProductIamgeUpdateRequest
+    public class ProductImageUpdateRequest
     {
     }
 }

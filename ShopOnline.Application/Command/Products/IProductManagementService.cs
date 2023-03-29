@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using ShopOnlineViewModel.Catalog.Product;
 using ShopOnlineViewModel.Catalog.Product.Manage;
+using ShopOnlineViewModel.Catalog.ProductImage;
 using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
