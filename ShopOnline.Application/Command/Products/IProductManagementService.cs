@@ -25,12 +25,11 @@ namespace ShopOnline.Application.Command.Products
 
         Task<int> AddImange(int productId, List<IFormFile> files);
 
-        Task<int> UpdateImage(int productId, int ImageId, List<IFormFile> files);
+        Task<int> UpdateImage(int ImageId, string caption, bool isDefault);
         Task<int> RemoveImage(int imageId);
 
         
 
-       Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request);
 
     }
 }
