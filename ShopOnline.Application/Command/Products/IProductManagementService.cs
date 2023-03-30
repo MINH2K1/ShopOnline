@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using ShopOnlineViewModel.Catalog.Product;
 using ShopOnlineViewModel.Catalog.Product.Manage;
+using ShopOnlineViewModel.Catalog.ProductImage;
 using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,11 @@ namespace ShopOnline.Application.Command.Products
 
         Task<int> AddImange(int productId, List<IFormFile> files);
 
-        Task<int> UpdateImage(int productId, int ImageId, List<IFormFile> files);
+        Task<int> UpdateImage(int ImageId, string caption, bool isDefault);
         Task<int> RemoveImage(int imageId);
-
-        
 
        Task<PageResult<ProductViewModel>> GetProductPaging(GetProductPagingRequestManage request);
 
+        Task<List<ProductImageViewModel>> GetListImage(int ProductIsd);
     }
 }
