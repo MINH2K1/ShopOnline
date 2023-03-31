@@ -10,4 +10,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ShopOnline.Application\ShopOnline.Application.csproj" />
+    <ProjectReference Include="..\ShopOnline.Data\ShopOnline.Data.csproj" />
+    <ProjectReference Include="..\ShopOnline.Utill\ShopOnline.Utill.csproj" />
+    <ProjectReference Include="..\ShopOnlineViewModel\ShopOnlineViewModel.csproj" />
+  </ItemGroup>
+
 </Project>

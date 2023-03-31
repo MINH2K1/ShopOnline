@@ -18,8 +18,7 @@ namespace ShopOnline.Data.ConfigurationDBContext
             builder.Property(x => x.Id).UseIdentityColumn();
             builder.Property(x => x.ImagePath).IsRequired().HasMaxLength(250);
             builder.Property(x => x.Caption).IsRequired().HasMaxLength(250);
-
-            builder.HasOne(x => x.Product).WithMany(x => x.ProductImanges).HasForeignKey(x => x.ProdutId);
+            builder.HasOne(x => x.Product).WithMany(x => x.ProductImanges).HasForeignKey(x => x.ProductId);
         }
     }
 }
