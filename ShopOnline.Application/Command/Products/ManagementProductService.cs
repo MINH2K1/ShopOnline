@@ -78,7 +78,8 @@ namespace ShopOnline.Application.Command.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return product.Id;
 
         }
 
@@ -265,5 +266,7 @@ namespace ShopOnline.Application.Command.Products
         {
             throw new NotImplementedException();
         }
+
+     
     }
 }

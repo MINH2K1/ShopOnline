@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Data.Data_Context;
+using ShopOnline.Data.Entities;
+using ShopOnline.Utill;
 using ShopOnlineViewModel.Catalog.Product;
 using ShopOnlineViewModel.Catalog.Product.Public;
 using ShopOnlineViewModel.Common;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -94,6 +97,17 @@ namespace ShopOnline.Application.Command.Products
 
        
            return data;
+        }
+        public async Task<ProductViewModel> GetById(int Id)
+        {
+
+            var product = await _context.Products.FindAsync(Id);
+            if (product == null)
+            {
+                throw new ShopOnlineException($"can not product {Id}");
+            }
+    
+
         }
     }
 }
