@@ -10,7 +10,7 @@ namespace ShopOnline.Utill
 
     {
         public ShopOnlineException() { }
-        public static ShopOnlineException(string message) : base(message)
+        public ShopOnlineException(string message) : base(message)
         {
 
         }

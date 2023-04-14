@@ -1,6 +1,7 @@
-﻿using ShopOnline.Application.Command.Products.Dtos;
-using ShopOnline.Application.Command.Products.Dtos.Public;
-using ShopOnline.Application.Dtos;
+﻿
+using ShopOnlineViewModel.Catalog.Product;
+using ShopOnlineViewModel.Catalog.Product.Public;
+using ShopOnlineViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace ShopOnline.Application.Command.Products
     public interface IProductService
     {
        Task<PageResult<ProductViewModel> >GetAllByCategory(GetProductPagingRequest request);
+        Task<List<ProductViewModel>> GetAll();
 
     }
 }
