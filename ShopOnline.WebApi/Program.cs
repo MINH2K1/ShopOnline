@@ -18,6 +18,7 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 
 builder.Services.AddDbContext<ShopOnline_Context>(options => options.UseSqlServer(configuration.GetConnectionString("ShopOnline")));
 builder.Services.AddTransient<IProductService, PublicProductService>();
+builder.Services.AddTransient<IProductManagementService, ManagementProductService>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

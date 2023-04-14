@@ -13,7 +13,7 @@ namespace ShopOnline.Application.Command.Products
     public interface IProductService
     {
        Task<PageResult<ProductViewModel> >GetAllByCategory(GetProductPagingRequest request);
-        Task<List<ProductViewModel>> GetAll();
-
+       Task<List<ProductViewModel>> GetAll();
+       Task<ProductViewModel> GetById(int Id);
     }
 }
